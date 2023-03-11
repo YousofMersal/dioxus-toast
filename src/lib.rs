@@ -174,10 +174,10 @@ pub fn ToastFrame<'a>(cx: Scope<'a, ToastFrameProps<'a>>) -> Element {
             let mut class = String::from("has-icon ");
 
             match icon {
-                Icon::Success => class.push_str("icon-success"),
-                Icon::Warning => class.push_str("icon-warning"),
-                Icon::Error => class.push_str("icon-error"),
-                Icon::Info => class.push_str("icon-info"),
+                Icon::Success => class.push_str("alert-success"),
+                Icon::Warning => class.push_str("alert-warning"),
+                Icon::Error => class.push_str("alert-error"),
+                Icon::Info => class.push_str("alert-info"),
             }
 
             class
@@ -187,34 +187,36 @@ pub fn ToastFrame<'a>(cx: Scope<'a, ToastFrameProps<'a>>) -> Element {
 
         let element = rsx! {
             div {
-                class: "toast-single {icon_class}",
+                class: "toast-single alert pd-4 {icon_class}",
                 id: "{id}",
-                if item.info.allow_toast_close {
-                    cx.render(rsx! {
-                        div {
-                            class: "close-toast-single",
-                            onclick: move |_| {
-                                manager.write().list.remove(&current_id);
-                            },
-                            "×",
-                        }
-                    })
-                } else {
-                    None
-                }
-                if let Some(v) = &item.info.heading {
-                    cx.render(rsx! {
-                        h2 {
-                            class: "toast-heading",
-                            "{v}"
-                        }
-                    })
-                } else {
-                    None
-                }
+                onclick: move |_| {
+                    manager.write().list.remove(&current_id);
+                },
+                // if item.info.allow_toast_close {
+                //     cx.render(rsx! {
+                //         div {
+                //             class: "close-toast-single",
+                //             "×",
+                //         }
+                //     })
+                // } else {
+                //     None
+                // }
+                // if let Some(v) = &item.info.heading {
+                //     cx.render(rsx! {
+                //         h2 {
+                //             class: "toast-heading",
+                //             "{v}"
+                //         }
+                //     })
+                // } else {
+                //     None
+                // }
 
-                span {
-                    dangerous_inner_html: "{item.info.context}",
+                div {
+                    span {
+                        dangerous_inner_html: "{item.info.context}",
+                    }
                 }
             }
         };
@@ -249,10 +251,10 @@ pub fn ToastFrame<'a>(cx: Scope<'a, ToastFrameProps<'a>>) -> Element {
 
     cx.render(rsx! {
         div {
-            class: "toast-scope",
-            style {  include_str!("./assets/toast.css")  },
+            class: "flex flex-col-reverse",
+            // style {  include_str!("./assets/toast.css")  },
             div {
-                class: "toast-wrap bottom-left",
+                class: "toast toast-start",
                 id: "wrap-bottom-left",
                 bottom_left_ele.into_iter()
             }
